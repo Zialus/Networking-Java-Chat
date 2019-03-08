@@ -1,0 +1,46 @@
+language: java
+dist: xenial
+
+install:
+  - export VERSION=5.2.1
+  - wget https://services.gradle.org/distributions/gradle-${VERSION}-bin.zip
+  - mkdir /tmp/gradle
+  - unzip -d /tmp/gradle gradle-${VERSION}-bin.zip
+  - export PATH=/tmp/gradle/gradle-${VERSION}/bin:$PATH
+  - gradle -v
+
+matrix:
+  include:
+    - os: linux
+      jdk: openjdk12
+    - os: linux
+      jdk: openjdk11
+    - os: linux
+      jdk: openjdk10
+    - os: linux
+      jdk: openjdk9
+    - os: linux
+      jdk: openjdk8
+
+    - os: linux
+      jdk: oraclejdk11
+
+
+    - os: osx
+      jdk: openjdk12
+    - os: osx
+      jdk: openjdk11
+    - os: osx
+      jdk: openjdk10
+    - os: osx
+      jdk: openjdk9
+    - os: osx
+      osx_image: xcode9.3 # This whole thing is dumb
+      env: JDK=openjdk8
+
+    - os: osx
+      jdk: oraclejdk11
+
+
+  allow_failures:
+    - jdk: openjdk12 # not out yet
