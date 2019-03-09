@@ -15,7 +15,7 @@ import java.util.regex.*;
 public class ChatServer {
 
     // Buffer for the received data
-    static private final ByteBuffer inBuffer = ByteBuffer.allocate( 16384 );
+    static private final ByteBuffer inBuffer = ByteBuffer.allocate(16384);
 
     // Decoder/Encoder for text transmission
     static private final Charset charset = Charset.forName("UTF8");
@@ -52,10 +52,10 @@ public class ChatServer {
             userRoom.userLeft(user);
             ChatUser[] usersSameRoom = userRoom.getUsers();
             ChatMessage chatMessage = new ChatMessage(MessageType.LEFT, user.getNick(), "");
-            for (ChatUser to : usersSameRoom){
+            for (ChatUser to : usersSameRoom) {
                 sendMessage(to.getSocketChannel(), chatMessage);
             }
-            if (usersSameRoom.length == 0){
+            if (usersSameRoom.length == 0) {
                 rooms.remove(userRoom.getName());
             }
         }
@@ -66,14 +66,14 @@ public class ChatServer {
 
     public static void main(String args[]) throws Exception {
 
-        if(args.length < 1) {
+        if (args.length < 1) {
             System.out.println("Usage: chatServer <server port>");
             return;
         }
 
         String portStr = args[0];
 
-        Integer port  = Integer.parseInt(portStr);
+        Integer port = Integer.parseInt(portStr);
 
         try {
             // Setup server
@@ -127,7 +127,7 @@ public class ChatServer {
                                 closeClient(socketChannel);
                             }
 
-                        } catch(IOException ex) {
+                        } catch (IOException ex) {
 
                             // On exception, remove this channel from the selector and remove user
                             key.cancel();
@@ -138,7 +138,7 @@ public class ChatServer {
 
                 keys.clear();
             }
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             System.err.println(ex);
         }
     }
@@ -152,20 +152,20 @@ public class ChatServer {
         sendMessage(to.getSocketChannel(), chatMessage);
     }
 
-    private static void sendOk(ChatUser to) throws IOException  {
+    private static void sendOk(ChatUser to) throws IOException {
         ChatMessage chatMessage = new ChatMessage(MessageType.OK, "", "");
         sendMessage(to.getSocketChannel(), chatMessage);
     }
 
-    private static void sendBye(ChatUser to) throws IOException  {
+    private static void sendBye(ChatUser to) throws IOException {
         ChatMessage chatMessage = new ChatMessage(MessageType.BYE, "", "");
         sendMessage(to.getSocketChannel(), chatMessage);
     }
 
-    private static void processCommand(String message, ChatUser sender) throws IOException  {
+    private static void processCommand(String message, ChatUser sender) throws IOException {
         String[] msgParts = message.split(" ");
 
-        if(msgParts[0].equals("/nick")) {
+        if (msgParts[0].equals("/nick")) {
             //apenas tem 2 palavras
             if (msgParts.length != 2) {
                 sendError(sender, "Uso inválido deste comando! Precisas de indicar um nick!");
@@ -175,7 +175,7 @@ public class ChatServer {
             String newNick = msgParts[1];
 
             //nick já tá a ser utilizado?
-            if (nicks.containsKey(newNick)){
+            if (nicks.containsKey(newNick)) {
                 sendError(sender, "Este nick já está a ser utilizado!");
                 return;
             }
@@ -186,7 +186,7 @@ public class ChatServer {
             nicks.put(newNick, sender);
             sendOk(sender);
 
-            if(sender.getState() == UserState.INIT)
+            if (sender.getState() == UserState.INIT)
                 sender.setState(UserState.OUTSIDE);
             else if (sender.getState() == UserState.INSIDE) {
                 ChatUser[] usersSameRoom = sender.getRoom().getUsers();
@@ -197,14 +197,14 @@ public class ChatServer {
                         sendMessage(to.getSocketChannel(), chatMessage);
             }
 
-        } else if(msgParts[0].equals("/join")) {
+        } else if (msgParts[0].equals("/join")) {
 
             if (msgParts.length != 2) {
                 sendError(sender, "Uso inválido deste comando! Precisas de indicar um nome de uma sala");
                 return;
             }
 
-            if (sender.getState() == UserState.INIT){
+            if (sender.getState() == UserState.INIT) {
                 sendError(sender, "Precisas de ter um nick antes de poderes entrar numa sala!");
                 return;
             }
@@ -243,7 +243,7 @@ public class ChatServer {
             sender.setState(UserState.INSIDE);
             sendOk(sender);
 
-        } else if(msgParts[0].equals("/leave")) {
+        } else if (msgParts[0].equals("/leave")) {
 
             if (sender.getState() == UserState.INSIDE) {
                 ChatRoom senderRoom = sender.getRoom();
@@ -266,9 +266,7 @@ public class ChatServer {
                 sendError(sender, "Precisas de estar dentro de uma sala para enviar uma mensagem!");
             }
 
-        }
-
-        else if(msgParts[0].equals("/sala")) {
+        } else if (msgParts[0].equals("/sala")) {
             if (sender.getState() == UserState.INSIDE) {
                 ChatRoom senderRoom = sender.getRoom();
                 String roomName = senderRoom.getName();
@@ -279,13 +277,12 @@ public class ChatServer {
             } else {
                 sendError(sender, "Não estás dentro de uma sala!");
             }
-        }
-        else if(msgParts[0].equals("/bye")) {
+        } else if (msgParts[0].equals("/bye")) {
 
             sendBye(sender);
             closeClient(sender.getSocketChannel());
 
-        } else if(msgParts[0].equals("/priv")) {
+        } else if (msgParts[0].equals("/priv")) {
 
             if (msgParts.length < 2) {
                 sendError(sender, "Uso inválido deste comando! Precisas de indicar um nick de destinatário");
@@ -299,7 +296,7 @@ public class ChatServer {
             }
 
             String finalMessage = "";
-            for (int i = 2; i < msgParts.length; i ++) {
+            for (int i = 2; i < msgParts.length; i++) {
                 if (i > 2)
                     finalMessage += " ";
                 finalMessage += msgParts[i];
@@ -314,16 +311,15 @@ public class ChatServer {
 
     }
 
-    private static void processMessage(String message, ChatUser sender) throws IOException  {
+    private static void processMessage(String message, ChatUser sender) throws IOException {
         if (sender.getState() == UserState.INSIDE) {
             ChatRoom senderRoom = sender.getRoom();
             ChatUser[] usersSameRoom = senderRoom.getUsers();
-            for (ChatUser to : usersSameRoom){
+            for (ChatUser to : usersSameRoom) {
                 ChatMessage chatMessage = new ChatMessage(MessageType.MESSAGE, sender.getNick(), message);
                 sendMessage(to.getSocketChannel(), chatMessage);
             }
-        }
-        else
+        } else
             sendError(sender, "É preciso estares dentro de uma sala para poderes enviar uma mensagem");
     }
 
@@ -340,28 +336,26 @@ public class ChatServer {
         String message = decoder.decode(inBuffer).toString();
         ChatUser sender = users.get(socketChannel);
 
-        if(!message.contains("\n")){
-            incomplete_message+=message;
+        if (!message.contains("\n")) {
+            incomplete_message += message;
             incomplete = true;
-        }
-        else if(incomplete){
-            incomplete_message+=message;
+        } else if (incomplete) {
+            incomplete_message += message;
             message = incomplete_message;
-            incomplete=false;
+            incomplete = false;
             incomplete_message = "";
         }
 
-        if(!incomplete){
+        if (!incomplete) {
             String[] split = message.split("\n+");
-            for(String msg : split){
-                if(msg.length() > 0 && msg.charAt(0) == '/'){
-                    if(msg.length() > 1 && msg.charAt(1) == '/')
+            for (String msg : split) {
+                if (msg.length() > 0 && msg.charAt(0) == '/') {
+                    if (msg.length() > 1 && msg.charAt(1) == '/')
                         processMessage(msg.substring(1), sender);
-                    else{
+                    else {
                         processCommand(msg, sender);
                     }
-                }
-                else if(msg.length() >0)
+                } else if (msg.length() > 0)
                     processMessage(msg, sender);
             }
         }
@@ -370,13 +364,9 @@ public class ChatServer {
 }
 
 
-
-
-enum UserState { INIT, OUTSIDE, INSIDE }
+enum UserState {INIT, OUTSIDE, INSIDE}
 
 class ChatUser implements Comparable<ChatUser> {
-// class ChatUser {
-
     private String nick;
     private UserState userState;
     private SocketChannel socketChannel;
@@ -429,7 +419,6 @@ class ChatUser implements Comparable<ChatUser> {
 }
 
 
-
 class ChatRoom {
     private String name;
     private Set<ChatUser> users;
@@ -458,7 +447,7 @@ class ChatRoom {
 }
 
 
-enum MessageType { OK, ERROR, MESSAGE, NEWNICK, JOINED, LEFT, BYE, PRIVATE, SALA }
+enum MessageType {OK, ERROR, MESSAGE, NEWNICK, JOINED, LEFT, BYE, PRIVATE, SALA}
 
 class ChatMessage {
     private MessageType messageType;
@@ -474,8 +463,8 @@ class ChatMessage {
     public String toString(Boolean prettify) {
         String finalMsg = "";
 
-        if(prettify){
-            switch(this.messageType){
+        if (prettify) {
+            switch (this.messageType) {
                 case OK:
                     finalMsg = "Comando aceite!";
                     break;
@@ -501,9 +490,8 @@ class ChatMessage {
                     finalMsg = "(Privado) " + this.messageFirstPart + ": " + this.messageSecondPart;
                     break;
             }
-        }
-        else{
-            switch(this.messageType){
+        } else {
+            switch (this.messageType) {
                 case OK:
                     finalMsg = "OK";
                     break;

@@ -12,7 +12,6 @@ import java.nio.charset.*;
 import java.util.regex.*;
 
 
-
 public class ChatClient {
 
     // GUI vars
@@ -85,7 +84,7 @@ public class ChatClient {
 
     // Mensage sender - send the message to the server
     public void newMessage(String message) throws IOException {
-        socketChannel.write(encoder.encode(CharBuffer.wrap(message+"\n")));
+        socketChannel.write(encoder.encode(CharBuffer.wrap(message + "\n")));
     }
 
     // Listener of server messages
@@ -126,7 +125,7 @@ public class ChatClient {
     // Client Main
     public static void main(String[] args) throws IOException {
 
-        if(args.length < 2) {
+        if (args.length < 2) {
             System.out.println("Usage: chatClient <server ip> <server port>");
             return;
         }
@@ -141,8 +140,7 @@ public class ChatClient {
 }
 
 
-
-enum C_MessageType { OK, ERROR, MESSAGE, NEWNICK, JOINED, LEFT, BYE, PRIVATE, SALA }
+enum C_MessageType {OK, ERROR, MESSAGE, NEWNICK, JOINED, LEFT, BYE, PRIVATE, SALA}
 
 class C_ChatMessage {
 
@@ -159,7 +157,7 @@ class C_ChatMessage {
     public String toString(Boolean prettify) {
         String finalMsg = "";
 
-        switch(this.messageType){
+        switch (this.messageType) {
             case OK:
                 finalMsg = "Comando aceite!";
                 break;
@@ -204,27 +202,23 @@ class C_ChatMessage {
 
         if (msgParts[0].equals("OK")) {
             _messageType = C_MessageType.OK;
-        }
-        else if (msgParts[0].equals("ERROR")) {
+        } else if (msgParts[0].equals("ERROR")) {
             _messageType = C_MessageType.ERROR;
             _messageFirstPart = unparsedMessage.substring(6);
-        }
-        else if (msgParts[0].equals("MESSAGE")) {
+        } else if (msgParts[0].equals("MESSAGE")) {
             _messageType = C_MessageType.MESSAGE;
             _messageFirstPart = msgParts[1];
             String finalMessage = "";
-            for (int i = 2; i < msgParts.length; i ++) {
+            for (int i = 2; i < msgParts.length; i++) {
                 if (i > 2) finalMessage += " ";
                 finalMessage += msgParts[i];
             }
             _messageSecondPart = finalMessage;
-        }
-        else if (msgParts[0].equals("NEWNICK")) {
+        } else if (msgParts[0].equals("NEWNICK")) {
             _messageType = C_MessageType.NEWNICK;
             _messageFirstPart = msgParts[1];
             _messageSecondPart = msgParts[2];
-        }
-        else if (msgParts[0].equals("JOINED")) {
+        } else if (msgParts[0].equals("JOINED")) {
             _messageType = C_MessageType.JOINED;
             _messageFirstPart = msgParts[1];
         } else if (msgParts[0].equals("LEFT")) {
@@ -240,7 +234,7 @@ class C_ChatMessage {
             _messageType = C_MessageType.PRIVATE;
             _messageFirstPart = msgParts[1];
             String finalMessage = "";
-            for (int i = 2; i < msgParts.length; i ++) {
+            for (int i = 2; i < msgParts.length; i++) {
                 if (i > 2) finalMessage += " ";
                 finalMessage += msgParts[i];
             }
