@@ -88,45 +88,57 @@ public class ChatMessage {
 
         String[] msgParts = unparsedMessage.split(" ");
 
-        if (msgParts[0].equals("OK")) {
-            _messageType = MessageType.OK;
-        } else if (msgParts[0].equals("ERROR")) {
-            _messageType = MessageType.ERROR;
-            _messageFirstPart = unparsedMessage.substring(6);
-        } else if (msgParts[0].equals("MESSAGE")) {
-            _messageType = MessageType.MESSAGE;
-            _messageFirstPart = msgParts[1];
-            String finalMessage = "";
-            for (int i = 2; i < msgParts.length; i++) {
-                if (i > 2) finalMessage += " ";
-                finalMessage += msgParts[i];
+        switch (msgParts[0]) {
+            case "OK":
+                _messageType = MessageType.OK;
+                break;
+            case "ERROR":
+                _messageType = MessageType.ERROR;
+                _messageFirstPart = unparsedMessage.substring(6);
+                break;
+            case "MESSAGE": {
+                _messageType = MessageType.MESSAGE;
+                _messageFirstPart = msgParts[1];
+                String finalMessage = "";
+                for (int i = 2; i < msgParts.length; i++) {
+                    if (i > 2) finalMessage += " ";
+                    finalMessage += msgParts[i];
+                }
+                _messageSecondPart = finalMessage;
+                break;
             }
-            _messageSecondPart = finalMessage;
-        } else if (msgParts[0].equals("NEWNICK")) {
-            _messageType = MessageType.NEWNICK;
-            _messageFirstPart = msgParts[1];
-            _messageSecondPart = msgParts[2];
-        } else if (msgParts[0].equals("JOINED")) {
-            _messageType = MessageType.JOINED;
-            _messageFirstPart = msgParts[1];
-        } else if (msgParts[0].equals("LEFT")) {
-            _messageType = MessageType.LEFT;
-            _messageFirstPart = msgParts[1];
-        } else if (msgParts[0].equals("BYE")) {
-            _messageType = MessageType.BYE;
-        } else if (msgParts[0].equals("SALA")) {
-            _messageType = MessageType.SALA;
-            _messageFirstPart = msgParts[1];
-            _messageSecondPart = msgParts[2];
-        } else if (msgParts[0].equals("PRIVATE")) {
-            _messageType = MessageType.PRIVATE;
-            _messageFirstPart = msgParts[1];
-            String finalMessage = "";
-            for (int i = 2; i < msgParts.length; i++) {
-                if (i > 2) finalMessage += " ";
-                finalMessage += msgParts[i];
+            case "NEWNICK":
+                _messageType = MessageType.NEWNICK;
+                _messageFirstPart = msgParts[1];
+                _messageSecondPart = msgParts[2];
+                break;
+            case "JOINED":
+                _messageType = MessageType.JOINED;
+                _messageFirstPart = msgParts[1];
+                break;
+            case "LEFT":
+                _messageType = MessageType.LEFT;
+                _messageFirstPart = msgParts[1];
+                break;
+            case "BYE":
+                _messageType = MessageType.BYE;
+                break;
+            case "SALA":
+                _messageType = MessageType.SALA;
+                _messageFirstPart = msgParts[1];
+                _messageSecondPart = msgParts[2];
+                break;
+            case "PRIVATE": {
+                _messageType = MessageType.PRIVATE;
+                _messageFirstPart = msgParts[1];
+                String finalMessage = "";
+                for (int i = 2; i < msgParts.length; i++) {
+                    if (i > 2) finalMessage += " ";
+                    finalMessage += msgParts[i];
+                }
+                _messageSecondPart = finalMessage;
+                break;
             }
-            _messageSecondPart = finalMessage;
         }
 
         return (new ChatMessage(_messageType, _messageFirstPart, _messageSecondPart));
