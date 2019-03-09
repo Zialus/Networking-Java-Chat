@@ -1,8 +1,6 @@
-package fcup;
+package fcup.common;
 
-enum MessageType {OK, ERROR, MESSAGE, NEWNICK, JOINED, LEFT, BYE, PRIVATE, SALA}
-
-class ChatMessage {
+public class ChatMessage {
     private MessageType messageType;
     private String messageFirstPart;
     private String messageSecondPart;

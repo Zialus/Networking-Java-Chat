@@ -1,4 +1,4 @@
-package fcup;
+package fcup.Server;
 
 import org.junit.jupiter.api.Test;
 

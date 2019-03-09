@@ -1,4 +1,7 @@
-package fcup;
+package fcup.Server;
+
+import fcup.common.ChatMessage;
+import fcup.common.MessageType;
 
 import java.io.*;
 import java.net.*;
