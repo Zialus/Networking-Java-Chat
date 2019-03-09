@@ -55,17 +55,7 @@ public class ChatServer {
         ChatUser user = users.get(socketChannel);
 
         if (user.getState() == UserState.INSIDE) {
-
-            ChatRoom userRoom = user.getRoom();
-            userRoom.userLeft(user);
-            ChatUser[] usersSameRoom = userRoom.getUsers();
-            ChatMessage chatMessage = new ChatMessage(MessageType.LEFT, user.getNick(), "");
-            for (ChatUser to : usersSameRoom) {
-                sendMessage(to.getSocketChannel(), chatMessage);
-            }
-            if (usersSameRoom.length == 0) {
-                rooms.remove(userRoom.getName());
-            }
+            removeUserFromRoom(user);
         }
 
         nicks.remove(user.getNick());
@@ -239,22 +229,8 @@ public class ChatServer {
 
     private static void leaveCommand(ChatUser sender) throws IOException {
         if (sender.getState() == UserState.INSIDE) {
-            ChatRoom senderRoom = sender.getRoom();
-            senderRoom.userLeft(sender);
-
-            ChatUser[] usersSameRoom = senderRoom.getUsers();
-            ChatMessage chatMessage = new ChatMessage(MessageType.LEFT, sender.getNick(), "");
-
-            for (ChatUser to : usersSameRoom)
-                sendMessage(to.getSocketChannel(), chatMessage);
-
-            if (usersSameRoom.length == 0)
-                rooms.remove(senderRoom.getName());
-
-            sender.leftRoom();
-            sender.setState(UserState.OUTSIDE);
+            removeUserFromRoom(sender);
             sendOk(sender);
-
         } else {
             sendError(sender, "Precisas de estar dentro de uma sala para enviar uma mensagem!");
         }
@@ -272,20 +248,7 @@ public class ChatServer {
         }
 
         if (sender.getState() == UserState.INSIDE) {
-            ChatRoom senderRoom = sender.getRoom();
-            senderRoom.userLeft(sender);
-
-            ChatUser[] usersSameRoom = senderRoom.getUsers();
-            ChatMessage chatMessage = new ChatMessage(MessageType.LEFT, sender.getNick(), "");
-
-            for (ChatUser to : usersSameRoom)
-                sendMessage(to.getSocketChannel(), chatMessage);
-
-            if (usersSameRoom.length == 0)
-                rooms.remove(senderRoom.getName());
-
-            sender.leftRoom();
-            sender.setState(UserState.OUTSIDE);
+            removeUserFromRoom(sender);
         }
 
         String roomName = msgParts[1];
@@ -304,6 +267,23 @@ public class ChatServer {
         senderRoom.userJoin(sender);
         sender.setState(UserState.INSIDE);
         sendOk(sender);
+    }
+
+    private static void removeUserFromRoom(ChatUser user) throws IOException {
+        ChatRoom senderRoom = user.getRoom();
+        senderRoom.userLeft(user);
+
+        ChatUser[] usersSameRoom = senderRoom.getUsers();
+        ChatMessage chatMessage = new ChatMessage(MessageType.LEFT, user.getNick(), "");
+
+        for (ChatUser to : usersSameRoom)
+            sendMessage(to.getSocketChannel(), chatMessage);
+
+        if (usersSameRoom.length == 0)
+            rooms.remove(senderRoom.getName());
+
+        user.leftRoom();
+        user.setState(UserState.OUTSIDE);
     }
 
     private static void nickCommand(ChatUser sender, String[] msgParts) throws IOException {
