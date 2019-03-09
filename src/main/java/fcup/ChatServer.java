@@ -440,7 +440,7 @@ class ChatRoom {
     }
 
     public ChatUser[] getUsers() {
-        return this.users.toArray(new ChatUser[this.users.size()]);
+        return this.users.toArray(new ChatUser[0]);
     }
 
     public String getName() {
