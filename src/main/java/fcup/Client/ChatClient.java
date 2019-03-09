@@ -42,7 +42,7 @@ public class ChatClient {
     }
 
     // Initializer: GUI and Server Connection
-    private ChatClient(String server, int port) throws IOException {
+    private ChatClient(String server, int port) {
 
         // Setup GUI
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,15 +90,14 @@ public class ChatClient {
     private void run() throws IOException {
 
         try {
-            while (!socketChannel.finishConnect())
-                ;
+            while (!socketChannel.finishConnect());
         } catch (Exception ex) {
             System.out.println("Ocorreu um error ao ligar ao servidor! (" + ex.getMessage() + ")");
             System.exit(0);
             return;
         }
 
-        reader = new BufferedReader(new InputStreamReader(socketChannel.socket().getInputStream()));
+        reader = new BufferedReader(new InputStreamReader(socketChannel.socket().getInputStream(), decoder));
 
         while (true) {
             String received_msg = reader.readLine();

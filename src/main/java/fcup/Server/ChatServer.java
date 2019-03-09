@@ -67,7 +67,7 @@ public class ChatServer {
         users.remove(socketChannel);
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) {
 
         if (args.length < 1) {
             System.out.println("Usage: chatServer <server port>");
@@ -76,7 +76,7 @@ public class ChatServer {
 
         String portStr = args[0];
 
-        Integer port = Integer.parseInt(portStr);
+        int port = Integer.parseInt(portStr);
 
         try {
             // Setup server
@@ -139,7 +139,7 @@ public class ChatServer {
                 keys.clear();
             }
         } catch (IOException ex) {
-            System.err.println(ex);
+            ex.printStackTrace();
         }
     }
 
