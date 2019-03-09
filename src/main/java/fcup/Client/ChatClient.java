@@ -17,7 +17,7 @@ import java.util.regex.*;
 public class ChatClient {
 
     // GUI vars
-    JFrame frame = new JFrame("Chat Client");
+    private JFrame frame = new JFrame("Chat Client");
     private JTextField chatBox = new JTextField();
     private JTextArea chatArea = new JTextArea();
 
@@ -32,17 +32,17 @@ public class ChatClient {
     private final CharsetDecoder decoder = charset.newDecoder();
 
     // GUI function to print message
-    public void printMessage(final String message) {
+    private void printMessage(final String message) {
         chatArea.append(message);
     }
 
     // Message printer (to chat)
-    public void printMessage(final ChatMessage message) {
+    private void printMessage(final ChatMessage message) {
         printMessage(message.toString(true));
     }
 
     // Initializer: GUI and Server Connection
-    public ChatClient(String server, int port) throws IOException {
+    private ChatClient(String server, int port) throws IOException {
 
         // Setup GUI
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,12 +82,12 @@ public class ChatClient {
     }
 
     // Mensage sender - send the message to the server
-    public void newMessage(String message) throws IOException {
+    private void newMessage(String message) throws IOException {
         socketChannel.write(encoder.encode(CharBuffer.wrap(message + "\n")));
     }
 
     // Listener of server messages
-    public void run() throws IOException {
+    private void run() throws IOException {
 
         try {
             while (!socketChannel.finishConnect())

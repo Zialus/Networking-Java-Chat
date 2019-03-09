@@ -33,7 +33,7 @@ public class ChatServer {
     static private String incomplete_message = new String("");
     static private boolean incomplete = false;
 
-    public static void closeClient(SocketChannel socketChannel) throws IOException {
+    private static void closeClient(SocketChannel socketChannel) throws IOException {
 
         Socket socket = socketChannel.socket();
 
