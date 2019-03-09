@@ -67,6 +67,6 @@ def jarPackage(groupName, artifactName, artifactVersion) {
 }
 
 artifacts {
-    archives jarPackage("$group", "ChatClient", "$version"),
-            jarPackage("$group", "ChatServer", "$version")
+    archives jarPackage("$group", "Client.ChatClient", "$version"),
+            jarPackage("$group", "Server.ChatServer", "$version")
 }

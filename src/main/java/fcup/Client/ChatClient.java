@@ -23,7 +23,6 @@ public class ChatClient {
 
     // Socket vars
     private SocketChannel socketChannel;
-    private BufferedReader reader;
     private Boolean connectionOver = false;
 
     // Decoder/Encoder for text transmission
@@ -60,7 +59,7 @@ public class ChatClient {
             try {
                 newMessage(chatBox.getText());
             } catch (IOException ex) {
-                System.out.println("There was an error sending a message! (" + ex.getMessage() + ")");
+                System.out.println("There was an error getting text! (" + ex.getMessage() + ")");
             } finally {
                 chatBox.setText("");
             }
@@ -81,7 +80,7 @@ public class ChatClient {
 
     }
 
-    // Mensage sender - send the message to the server
+    // Message sender - send the message to the server
     private void newMessage(String message) throws IOException {
         socketChannel.write(encoder.encode(CharBuffer.wrap(message + "\n")));
     }
@@ -89,15 +88,9 @@ public class ChatClient {
     // Listener of server messages
     private void run() throws IOException {
 
-        try {
-            while (!socketChannel.finishConnect());
-        } catch (Exception ex) {
-            System.out.println("Ocorreu um error ao ligar ao servidor! (" + ex.getMessage() + ")");
-            System.exit(0);
-            return;
-        }
+        socketChannel.finishConnect();
 
-        reader = new BufferedReader(new InputStreamReader(socketChannel.socket().getInputStream(), decoder));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(socketChannel.socket().getInputStream(), decoder));
 
         while (true) {
             String received_msg = reader.readLine();
@@ -112,7 +105,7 @@ public class ChatClient {
         try {
             Thread.sleep(73);
         } catch (InterruptedException ex) {
-            System.out.println("Ocorreu um error ao ligar ao servidor! (" + ex.getMessage() + ")");
+            System.err.println("Ocorreu um error com a thread principal! (" + ex.getMessage() + ")");
             System.exit(0);
             return;
         }
@@ -123,7 +116,7 @@ public class ChatClient {
     // Client Main
     public static void main(String[] args) throws IOException {
 
-        if (args.length < 2) {
+        if (args.length != 2) {
             System.out.println("Usage: chatClient <server ip> <server port>");
             return;
         }

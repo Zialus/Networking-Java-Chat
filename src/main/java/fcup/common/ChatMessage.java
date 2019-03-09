@@ -99,7 +99,7 @@ public class ChatMessage {
             case "MESSAGE": {
                 _messageType = MessageType.MESSAGE;
                 _messageFirstPart = msgParts[1];
-                _messageSecondPart = createSecondParte(msgParts);
+                _messageSecondPart = createSecondPart(msgParts);
                 break;
             }
             case "NEWNICK":
@@ -126,7 +126,7 @@ public class ChatMessage {
             case "PRIVATE": {
                 _messageType = MessageType.PRIVATE;
                 _messageFirstPart = msgParts[1];
-                _messageSecondPart = createSecondParte(msgParts);
+                _messageSecondPart = createSecondPart(msgParts);
                 break;
             }
         }
@@ -134,7 +134,7 @@ public class ChatMessage {
         return (new ChatMessage(_messageType, _messageFirstPart, _messageSecondPart));
     }
 
-    private static String createSecondParte(String[] msgParts) {
+    private static String createSecondPart(String[] msgParts) {
         String _messageSecondPart;
         StringBuilder finalMessage = new StringBuilder();
         for (int i = 2; i < msgParts.length; i++) {
