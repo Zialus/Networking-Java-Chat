@@ -136,12 +136,12 @@ public class ChatMessage {
 
     private static String createSecondParte(String[] msgParts) {
         String _messageSecondPart;
-        String finalMessage = "";
+        StringBuilder finalMessage = new StringBuilder();
         for (int i = 2; i < msgParts.length; i++) {
-            if (i > 2) finalMessage += " ";
-            finalMessage += msgParts[i];
+            if (i > 2) finalMessage.append(" ");
+            finalMessage.append(msgParts[i]);
         }
-        _messageSecondPart = finalMessage;
+        _messageSecondPart = finalMessage.toString();
         return _messageSecondPart;
     }
 
