@@ -56,21 +56,18 @@ public class ChatClient {
         frame.setVisible(true);
         chatArea.setEditable(false);
         chatBox.setEditable(true);
-        chatBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    newMessage(chatBox.getText());
-                } catch (IOException ex) {
-                    System.out.println("There was an error sending a message! (" + ex.getMessage() + ")");
-                } finally {
-                    chatBox.setText("");
-                }
-
-                if (connectionOver)
-                    System.exit(0);
-
+        chatBox.addActionListener(e -> {
+            try {
+                newMessage(chatBox.getText());
+            } catch (IOException ex) {
+                System.out.println("There was an error sending a message! (" + ex.getMessage() + ")");
+            } finally {
+                chatBox.setText("");
             }
+
+            if (connectionOver)
+                System.exit(0);
+
         });
 
         // Setup Server Connection

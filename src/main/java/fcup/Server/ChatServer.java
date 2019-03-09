@@ -26,9 +26,9 @@ public class ChatServer {
     static private final CharsetDecoder decoder = charset.newDecoder();
 
     // Users + Rooms vars
-    static private HashMap<SocketChannel, ChatUser> users = new HashMap<SocketChannel, ChatUser>();
-    static private HashMap<String, ChatUser> nicks = new HashMap<String, ChatUser>();
-    static private HashMap<String, ChatRoom> rooms = new HashMap<String, ChatRoom>();
+    static private HashMap<SocketChannel, ChatUser> users = new HashMap<>();
+    static private HashMap<String, ChatUser> nicks = new HashMap<>();
+    static private HashMap<String, ChatRoom> rooms = new HashMap<>();
 
     static private String incomplete_message = new String("");
     static private boolean incomplete = false;
@@ -97,10 +97,7 @@ public class ChatServer {
                     continue;
 
                 Set<SelectionKey> keys = selector.selectedKeys();
-                Iterator<SelectionKey> it = keys.iterator();
-                while (it.hasNext()) {
-
-                    SelectionKey key = it.next();
+                for (SelectionKey key : keys) {
 
                     if ((key.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) {
 
@@ -428,7 +425,7 @@ class ChatRoom {
 
     public ChatRoom(String _name) {
         this.name = _name;
-        this.users = new TreeSet<ChatUser>();
+        this.users = new TreeSet<>();
     }
 
     public ChatUser[] getUsers() {
