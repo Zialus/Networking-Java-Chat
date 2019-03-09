@@ -3,16 +3,21 @@ package fcup.Server;
 import fcup.common.ChatMessage;
 import fcup.common.MessageType;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.nio.*;
-import java.nio.channels.*;
-import java.nio.charset.*;
-import java.util.regex.*;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
+import java.util.HashMap;
+import java.util.Set;
 
 
 public class ChatServer {
@@ -371,87 +376,4 @@ public class ChatServer {
         }
         return true;
     }
-}
-
-
-enum UserState {INIT, OUTSIDE, INSIDE}
-
-class ChatUser implements Comparable<ChatUser> {
-    private String nick;
-    private UserState userState;
-    private SocketChannel socketChannel;
-    private ChatRoom room;
-
-    public ChatUser(SocketChannel _socketChannel) {
-        this.userState = UserState.INIT;
-        this.socketChannel = _socketChannel;
-        this.nick = "";
-        this.room = null;
-    }
-
-    @Override
-    public int compareTo(ChatUser a) {
-        return this.nick.compareTo(a.nick);
-    }
-
-    public UserState getState() {
-        return this.userState;
-    }
-
-    public String getNick() {
-        return this.nick;
-    }
-
-    public ChatRoom getRoom() {
-        return this.room;
-    }
-
-    public void leftRoom() {
-        this.room = null;
-    }
-
-    public void joinRoom(ChatRoom newRoom) {
-        this.room = newRoom;
-    }
-
-    public SocketChannel getSocketChannel() {
-        return this.socketChannel;
-    }
-
-    public void setState(UserState newState) {
-        this.userState = newState;
-    }
-
-    public void setNick(String newNick) {
-        this.nick = newNick;
-    }
-
-}
-
-
-class ChatRoom {
-    private String name;
-    private Set<ChatUser> users;
-
-    public ChatRoom(String _name) {
-        this.name = _name;
-        this.users = new TreeSet<>();
-    }
-
-    public ChatUser[] getUsers() {
-        return this.users.toArray(new ChatUser[0]);
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void userJoin(ChatUser user) {
-        this.users.add(user);
-    }
-
-    public void userLeft(ChatUser user) {
-        this.users.remove(user);
-    }
-
 }
