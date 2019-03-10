@@ -65,8 +65,8 @@ public class ChatServer {
 
     public static void main(String[] args) {
 
-        if (args.length < 1) {
-            System.out.println("Usage: chatServer <server port>");
+        if (args.length != 1) {
+            System.err.println("Usage: chatServer <server port>");
             return;
         }
 

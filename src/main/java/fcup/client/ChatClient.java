@@ -18,7 +18,6 @@ import java.nio.charset.CharsetEncoder;
 public class ChatClient {
 
     // GUI vars
-    private JFrame frame = new JFrame("Chat Client");
     private JTextField chatBox = new JTextField();
     private JTextArea chatArea = new JTextArea();
 
@@ -45,10 +44,13 @@ public class ChatClient {
     private ChatClient(String server, int port) {
 
         // Setup GUI
+        JFrame frame = new JFrame("Chat Client");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(chatBox);
+
         frame.setLayout(new BorderLayout());
         frame.add(panel, BorderLayout.SOUTH);
         frame.add(new JScrollPane(chatArea), BorderLayout.CENTER);
@@ -57,17 +59,12 @@ public class ChatClient {
         chatArea.setEditable(false);
         chatBox.setEditable(true);
         chatBox.addActionListener(e -> {
-            try {
-                newMessage(chatBox.getText());
-            } catch (IOException ex) {
-                System.out.println("There was an error getting text! (" + ex.getMessage() + ")");
-            } finally {
-                chatBox.setText("");
-            }
-
             if (connectionOver) {
                 Runtime.getRuntime().exit(0);
             }
+
+            newMessage(chatBox.getText());
+            chatBox.setText("");
         });
 
         // Setup Server Connection
@@ -76,14 +73,18 @@ public class ChatClient {
             socketChannel.configureBlocking(true);
             socketChannel.connect(new InetSocketAddress(server, port));
         } catch (IOException ex) {
-            System.out.println("There was an error setting up the connection with the server! (" + ex.getMessage() + ")");
+            System.err.println("There was an error setting up the connection with the server! (" + ex.getMessage() + ")");
         }
 
     }
 
     // Message sender - send the message to the server
-    private void newMessage(String message) throws IOException {
-        socketChannel.write(encoder.encode(CharBuffer.wrap(message + "\n")));
+    private void newMessage(String message) {
+        try {
+            socketChannel.write(encoder.encode(CharBuffer.wrap(message + "\n")));
+        } catch (IOException e) {
+            System.err.println("There was an error writing the message to the socket! (" + e.getMessage() + ")");
+        }
     }
 
     // Listener of server messages
@@ -91,12 +92,14 @@ public class ChatClient {
 
         socketChannel.finishConnect();
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(socketChannel.socket().getInputStream(), decoder));
+        InputStreamReader socket_reader = new InputStreamReader(socketChannel.socket().getInputStream(), decoder);
+
+        BufferedReader reader = new BufferedReader(socket_reader);
 
         while (true) {
             String receivedMsg = reader.readLine();
             if (receivedMsg == null) {
-                break;
+                break; //Server sent a null message, that means I should disconnect from it
             }
             receivedMsg = receivedMsg.trim();
             printMessage(ChatMessage.parseString(receivedMsg));
@@ -104,12 +107,12 @@ public class ChatClient {
 
         socketChannel.close();
 
+        System.out.println("Closing connection to the server...");
+
         try {
             Thread.sleep(73);
         } catch (InterruptedException ex) {
-            System.err.println("Ocorreu um error com a thread principal! (" + ex.getMessage() + ")");
-            Runtime.getRuntime().exit(0);
-            return;
+            System.err.println("Couldn't sleep! (" + ex.getMessage() + ")");
         }
 
         connectionOver = true;
@@ -119,7 +122,7 @@ public class ChatClient {
     public static void main(String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.out.println("Usage: chatClient <server ip> <server port>");
+            System.err.println("Usage: chatClient <server ip> <server port>");
             return;
         }
 
