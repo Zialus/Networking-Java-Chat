@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -31,11 +32,11 @@ public class ChatServer {
     static private final CharsetDecoder decoder = charset.newDecoder();
 
     // Users + Rooms vars
-    static private HashMap<SocketChannel, ChatUser> users = new HashMap<>();
-    static private HashMap<String, ChatUser> nicks = new HashMap<>();
-    static private HashMap<String, ChatRoom> rooms = new HashMap<>();
+    static private Map<SocketChannel, ChatUser> users = new HashMap<>();
+    static private Map<String, ChatUser> nicks = new HashMap<>();
+    static private Map<String, ChatRoom> rooms = new HashMap<>();
 
-    static private String incomplete_message = "";
+    static private String incompleteMessage = "";
     static private boolean incomplete = false;
 
     private static void closeClient(SocketChannel socketChannel) throws IOException {
@@ -345,13 +346,13 @@ public class ChatServer {
         ChatUser sender = users.get(socketChannel);
 
         if (!message.contains("\n")) {
-            incomplete_message += message;
+            incompleteMessage += message;
             incomplete = true;
         } else if (incomplete) {
-            incomplete_message += message;
-            message = incomplete_message;
+            incompleteMessage += message;
+            message = incompleteMessage;
             incomplete = false;
-            incomplete_message = "";
+            incompleteMessage = "";
         }
 
         if (!incomplete) {

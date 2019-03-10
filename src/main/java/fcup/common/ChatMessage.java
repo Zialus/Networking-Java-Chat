@@ -12,7 +12,7 @@ public class ChatMessage {
     }
 
     public String toString(Boolean prettify) {
-        String finalMsg = "";
+        String finalMsg;
 
         if (prettify) {
             switch (this.messageType) {
@@ -43,6 +43,8 @@ public class ChatMessage {
                 case SALA:
                     finalMsg = "Olá " + this.messageFirstPart + " estás na sala: " + this.messageSecondPart;
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + this.messageType);
             }
         } else {
             switch (this.messageType) {
@@ -73,6 +75,8 @@ public class ChatMessage {
                 case PRIVATE:
                     finalMsg = "PRIVATE " + this.messageFirstPart + " " + this.messageSecondPart;
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + this.messageType);
             }
         }
 
@@ -140,7 +144,7 @@ public class ChatMessage {
         String messageSecondPart;
         StringBuilder finalMessage = new StringBuilder();
         for (int i = 2; i < msgParts.length; i++) {
-            if (i > 2) finalMessage.append(" ");
+            if (i > 2) { finalMessage.append(" "); }
             finalMessage.append(msgParts[i]);
         }
         messageSecondPart = finalMessage.toString();
