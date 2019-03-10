@@ -8,9 +8,9 @@ class ChatUser implements Comparable<ChatUser> {
     private SocketChannel socketChannel;
     private ChatRoom room;
 
-    public ChatUser(SocketChannel _socketChannel) {
+    public ChatUser(SocketChannel socketChannel) {
         this.userState = UserState.INIT;
-        this.socketChannel = _socketChannel;
+        this.socketChannel = socketChannel;
         this.nick = "";
         this.room = null;
     }
@@ -24,8 +24,16 @@ class ChatUser implements Comparable<ChatUser> {
         return this.userState;
     }
 
+    public void setState(UserState newState) {
+        this.userState = newState;
+    }
+
     public String getNick() {
         return this.nick;
+    }
+
+    public void setNick(String newNick) {
+        this.nick = newNick;
     }
 
     public ChatRoom getRoom() {
@@ -42,14 +50,6 @@ class ChatUser implements Comparable<ChatUser> {
 
     public SocketChannel getSocketChannel() {
         return this.socketChannel;
-    }
-
-    public void setState(UserState newState) {
-        this.userState = newState;
-    }
-
-    public void setNick(String newNick) {
-        this.nick = newNick;
     }
 
 }

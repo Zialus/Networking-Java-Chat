@@ -7,8 +7,8 @@ class ChatRoom {
     private String name;
     private Set<ChatUser> users;
 
-    public ChatRoom(String _name) {
-        this.name = _name;
+    public ChatRoom(String name) {
+        this.name = name;
         this.users = new TreeSet<>();
     }
 

@@ -65,9 +65,9 @@ public class ChatClient {
                 chatBox.setText("");
             }
 
-            if (connectionOver)
+            if (connectionOver) {
                 Runtime.getRuntime().exit(0);
-
+            }
         });
 
         // Setup Server Connection
@@ -94,11 +94,12 @@ public class ChatClient {
         BufferedReader reader = new BufferedReader(new InputStreamReader(socketChannel.socket().getInputStream(), decoder));
 
         while (true) {
-            String received_msg = reader.readLine();
-            if (received_msg == null)
+            String receivedMsg = reader.readLine();
+            if (receivedMsg == null) {
                 break;
-            received_msg = received_msg.trim();
-            printMessage(ChatMessage.parseString(received_msg));
+            }
+            receivedMsg = receivedMsg.trim();
+            printMessage(ChatMessage.parseString(receivedMsg));
         }
 
         socketChannel.close();
