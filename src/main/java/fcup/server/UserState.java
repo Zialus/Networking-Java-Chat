@@ -1,3 +1,3 @@
-package fcup.Server;
+package fcup.server;
 
 enum UserState {INIT, OUTSIDE, INSIDE}

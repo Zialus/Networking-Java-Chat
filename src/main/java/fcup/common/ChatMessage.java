@@ -82,7 +82,7 @@ public class ChatMessage {
     }
 
     public static ChatMessage parseString(String unparsedMessage) {
-        MessageType messageType = null;
+        MessageType messageType;
         String messageFirstPart = "";
         String messageSecondPart = "";
 

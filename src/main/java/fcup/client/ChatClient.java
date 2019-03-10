@@ -1,4 +1,4 @@
-package fcup.Client;
+package fcup.client;
 
 import fcup.common.ChatMessage;
 

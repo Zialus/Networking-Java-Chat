@@ -1,4 +1,4 @@
-package fcup.Server;
+package fcup.server;
 
 import org.junit.jupiter.api.Test;
 
@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ChatRoomTest {
 
     @Test
-    void getUsers() {
+    public void getUsers() {
         ChatRoom room = new ChatRoom("OLA");
 
         ChatUser user1 = new ChatUser(null);

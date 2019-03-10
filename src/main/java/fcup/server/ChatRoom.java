@@ -1,4 +1,4 @@
-package fcup.Server;
+package fcup.server;
 
 import java.util.Set;
 import java.util.TreeSet;

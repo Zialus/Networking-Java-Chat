@@ -1,4 +1,4 @@
-package fcup.Server;
+package fcup.server;
 
 import java.nio.channels.SocketChannel;
 
