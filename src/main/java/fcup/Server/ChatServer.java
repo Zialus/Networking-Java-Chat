@@ -35,7 +35,7 @@ public class ChatServer {
     static private HashMap<String, ChatUser> nicks = new HashMap<>();
     static private HashMap<String, ChatRoom> rooms = new HashMap<>();
 
-    static private String incomplete_message = new String("");
+    static private String incomplete_message = "";
     static private boolean incomplete = false;
 
     private static void closeClient(SocketChannel socketChannel) throws IOException {
@@ -198,13 +198,13 @@ public class ChatServer {
             return;
         }
 
-        String finalMessage = "";
+        StringBuilder finalMessage = new StringBuilder();
         for (int i = 2; i < msgParts.length; i++) {
             if (i > 2)
-                finalMessage += " ";
-            finalMessage += msgParts[i];
+                finalMessage.append(" ");
+            finalMessage.append(msgParts[i]);
         }
-        ChatMessage chatMessage = new ChatMessage(MessageType.PRIVATE, sender.getNick(), finalMessage);
+        ChatMessage chatMessage = new ChatMessage(MessageType.PRIVATE, sender.getNick(), finalMessage.toString());
         sendMessage(nicks.get(toNick).getSocketChannel(), chatMessage);
         sendOk(sender);
     }
@@ -232,7 +232,7 @@ public class ChatServer {
             removeUserFromRoom(sender);
             sendOk(sender);
         } else {
-            sendError(sender, "Precisas de estar dentro de uma sala para enviar uma mensagem!");
+            sendError(sender, "Precisas de estar dentro de uma sala para sair de uma sala!");
         }
     }
 
@@ -243,7 +243,7 @@ public class ChatServer {
         }
 
         if (sender.getState() == UserState.INIT) {
-            sendError(sender, "Precisas de ter um nick antes de poderes entrar numa sala!");
+            sendError(sender, "Precisas de ter um nick antes de entrar numa sala!");
             return;
         }
 
@@ -314,7 +314,7 @@ public class ChatServer {
             ChatMessage chatMessage = new ChatMessage(MessageType.NEWNICK, oldNick, newNick);
 
             for (ChatUser to : usersSameRoom)
-                if (sender != to)
+                if (sender.equals(to))
                     sendMessage(to.getSocketChannel(), chatMessage);
         }
     }

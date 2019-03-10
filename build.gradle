@@ -1,8 +1,10 @@
 plugins {
-    id "se.patrikerdes.use-latest-versions" version "0.2.8"
+    id "se.patrikerdes.use-latest-versions" version "0.2.9"
     id "com.github.ben-manes.versions" version "0.21.0"
     id "net.ltgt.errorprone" version "0.7.1"
 //    id "com.github.spotbugs" version "1.6.10"
+//    id "pmd"
+//    id 'checkstyle'
     id "java"
     id "idea"
 }
@@ -20,7 +22,7 @@ repositories {
 dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.0'
     testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
-    
+
 //    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.8.0'
 //    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.3'
 

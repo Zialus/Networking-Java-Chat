@@ -82,67 +82,69 @@ public class ChatMessage {
     }
 
     public static ChatMessage parseString(String unparsedMessage) {
-        MessageType _messageType = null;
-        String _messageFirstPart = "";
-        String _messageSecondPart = "";
+        MessageType messageType = null;
+        String messageFirstPart = "";
+        String messageSecondPart = "";
 
         String[] msgParts = unparsedMessage.split(" ");
 
         switch (msgParts[0]) {
             case "OK":
-                _messageType = MessageType.OK;
+                messageType = MessageType.OK;
                 break;
             case "ERROR":
-                _messageType = MessageType.ERROR;
-                _messageFirstPart = unparsedMessage.substring(6);
+                messageType = MessageType.ERROR;
+                messageFirstPart = unparsedMessage.substring(6);
                 break;
             case "MESSAGE": {
-                _messageType = MessageType.MESSAGE;
-                _messageFirstPart = msgParts[1];
-                _messageSecondPart = createSecondPart(msgParts);
+                messageType = MessageType.MESSAGE;
+                messageFirstPart = msgParts[1];
+                messageSecondPart = createSecondPart(msgParts);
                 break;
             }
             case "NEWNICK":
-                _messageType = MessageType.NEWNICK;
-                _messageFirstPart = msgParts[1];
-                _messageSecondPart = msgParts[2];
+                messageType = MessageType.NEWNICK;
+                messageFirstPart = msgParts[1];
+                messageSecondPart = msgParts[2];
                 break;
             case "JOINED":
-                _messageType = MessageType.JOINED;
-                _messageFirstPart = msgParts[1];
+                messageType = MessageType.JOINED;
+                messageFirstPart = msgParts[1];
                 break;
             case "LEFT":
-                _messageType = MessageType.LEFT;
-                _messageFirstPart = msgParts[1];
+                messageType = MessageType.LEFT;
+                messageFirstPart = msgParts[1];
                 break;
             case "BYE":
-                _messageType = MessageType.BYE;
+                messageType = MessageType.BYE;
                 break;
             case "SALA":
-                _messageType = MessageType.SALA;
-                _messageFirstPart = msgParts[1];
-                _messageSecondPart = msgParts[2];
+                messageType = MessageType.SALA;
+                messageFirstPart = msgParts[1];
+                messageSecondPart = msgParts[2];
                 break;
             case "PRIVATE": {
-                _messageType = MessageType.PRIVATE;
-                _messageFirstPart = msgParts[1];
-                _messageSecondPart = createSecondPart(msgParts);
+                messageType = MessageType.PRIVATE;
+                messageFirstPart = msgParts[1];
+                messageSecondPart = createSecondPart(msgParts);
                 break;
             }
+            default:
+                throw new IllegalStateException("Unexpected value: " + msgParts[0]);
         }
 
-        return (new ChatMessage(_messageType, _messageFirstPart, _messageSecondPart));
+        return (new ChatMessage(messageType, messageFirstPart, messageSecondPart));
     }
 
     private static String createSecondPart(String[] msgParts) {
-        String _messageSecondPart;
+        String messageSecondPart;
         StringBuilder finalMessage = new StringBuilder();
         for (int i = 2; i < msgParts.length; i++) {
             if (i > 2) finalMessage.append(" ");
             finalMessage.append(msgParts[i]);
         }
-        _messageSecondPart = finalMessage.toString();
-        return _messageSecondPart;
+        messageSecondPart = finalMessage.toString();
+        return messageSecondPart;
     }
 
 }

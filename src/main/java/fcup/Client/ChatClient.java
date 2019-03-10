@@ -66,7 +66,7 @@ public class ChatClient {
             }
 
             if (connectionOver)
-                System.exit(0);
+                Runtime.getRuntime().exit(0);
 
         });
 
@@ -107,7 +107,7 @@ public class ChatClient {
             Thread.sleep(73);
         } catch (InterruptedException ex) {
             System.err.println("Ocorreu um error com a thread principal! (" + ex.getMessage() + ")");
-            System.exit(0);
+            Runtime.getRuntime().exit(0);
             return;
         }
 
