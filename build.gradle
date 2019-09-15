@@ -1,6 +1,7 @@
 plugins {
+    id 'info.solidsoft.pitest' version '1.4.5'
     id "se.patrikerdes.use-latest-versions" version "0.2.12"
-    id "com.github.ben-manes.versions" version "0.22.0"
+    id "com.github.ben-manes.versions" version "0.25.0"
 //    id "net.ltgt.errorprone" version "0.8.1"
     id "com.github.spotbugs" version "2.0.0"
     id "pmd"
@@ -20,8 +21,8 @@ repositories {
 }
 
 dependencies {
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.1'
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
 
 //    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.9.0'
 //    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.6'
