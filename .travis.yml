@@ -1,8 +1,8 @@
 language: java
 
 install:
-  - export VERSION=5.6.2
-  - wget https://services.gradle.org/distributions/gradle-${VERSION}-bin.zip
+  - export VERSION=6.0-20190928230021+0000
+  - wget https://services.gradle.org/distributions-snapshots/gradle-${VERSION}-bin.zip
   - mkdir /tmp/gradle
   - unzip -d /tmp/gradle gradle-${VERSION}-bin.zip
   - export PATH=/tmp/gradle/gradle-${VERSION}/bin:$PATH
