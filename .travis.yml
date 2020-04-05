@@ -37,5 +37,6 @@ jobs:
         sonarcloud:
           organization: "zialus-github"
           token:
-            secure: "SXcx1ozWzEBka3oPqcFmZKDWgEzAJoFppzs5bWJ2eEBtlqAxSlcV30RNqfWHF9Togazo8M32SvRo1grSc1T3efxbp0lrC/8s9Xs1pS8AeOSWvyHnHc+b04DTyQUtBkcv8di92+5Eh15xj15w9FUCYUFvUgKoH+S0KEQvZQW3k39/fx2RR6HXQFq/10lxAVv8iwFLf2Rhsf9sp9l1HnVBNP4fA8TWIyIjhYBFkcexdEzgdZUZQzgjp/gEz/1ddFQHFYM1VkYDxWXOP7ZK6N2/Yicgcd0jc6XLUT91hyLPi1lMKJa6B3zos53wHhxOuF1zmgGy5472LB9oMT03jIYkutbj/gJ/Y5iOU92g01z144q3Gvf1jXoJ/tc51RCWhqMSY0pzY9o1S59Sk8LOBOGFRZ5+hSwkvo3PnkEnGP2IxErpEbf+jX9bw35x26vjnGLBzB7t5QlQ+MkJXlxSWuqL6izIF9JaY602F8NcXzTuCkN579qKSldPDP33bllDwF9xQLhBVLGYpocIjYgX7dmEK315Ww5ZQpffkK4tPgQb9qnnWMhDemKPZGI4yZmedTNbmjE9CHH1Q01YgPFnClsnQHWmH0jelTlLaMyxhUOFVB5VeBkeYV4X2Zbz2bgof6szgFM4DW7RTufazum5Kuxa3h/LXlxYmzAL1WimO6zvqK8="
-      script: gradle sonarqube
+            secure: "i4A66tvlzV27KLOs3FRmOO02EKxRpswZieAlxL3DugfQrNQvbWMXs+ObNMus2eS/7dioDOMTJvSie+5yqobJo9cCg7VoXN2Are4ZJkHUcAOD/CqsCidpAUdzj5iBBz8fKZ+/sjWXHMiuqmeDDaZWKXIuQVUwLUhgfkUn8WhSXyujvIGUSya5hGY/4BYG0jV4OEmqZbawjerTgTPKthOX+kg2c7wUvLNyLf5lpvA2nW8fm+AE8t9UnxwJiGtLtEoT9Wdkpppo+mLU9aItl03qfdtnm9c+wWFhw7IGxZEOavw9Vv1rrP14zssyDNWEdh7lQnvDyBAFkvPkZfN2ylRVimxY95xshGdjG8ujGWfHmaDVKxQMQ13uYN+otvS8sTzAvz42ZZlWPTO+ZrPJh4cRoiWI5Fjxfu5Mgcp8Z7cnvGRt19E0/mE2sOEnSUat1p2ZqePUS7tzhqYrlMQsq46gqTpqe0FtDS4YR0JMyjVHv2GZxWgO7E16qWbJNbV2jFPp3vmrjFL639Q33Hx+aRCy2x3unIq1AXtJyESAkUdERZ0eYXvXyX+dwCcHkijB8wThwoCpPo14hPwgb2T+9NQhDka7AmRMR2LU0h1MChewzkQa0ZBe3iTEYQ7/osoghmsIl5tMlEQbDDwmigcvndQqGsq1g73CRoGqDKJTaz7/N8g="
+      script:
+        - gradle sonarqube
