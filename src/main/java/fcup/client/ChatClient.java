@@ -13,6 +13,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 
 
 public class ChatClient {
@@ -26,7 +27,7 @@ public class ChatClient {
     private Boolean connectionOver = false;
 
     // Decoder/Encoder for text transmission
-    private final Charset charset = Charset.forName("UTF8");
+    private final Charset charset = StandardCharsets.UTF_8;
     private final CharsetEncoder encoder = charset.newEncoder();
     private final CharsetDecoder decoder = charset.newDecoder();
 
@@ -59,7 +60,7 @@ public class ChatClient {
         chatArea.setEditable(false);
         chatBox.setEditable(true);
         chatBox.addActionListener(e -> {
-            if (connectionOver) {
+            if (Boolean.TRUE.equals(connectionOver)) {
                 Runtime.getRuntime().exit(0);
             }
 
@@ -92,9 +93,9 @@ public class ChatClient {
 
         socketChannel.finishConnect();
 
-        InputStreamReader socket_reader = new InputStreamReader(socketChannel.socket().getInputStream(), decoder);
+        InputStreamReader socketReader = new InputStreamReader(socketChannel.socket().getInputStream(), decoder);
 
-        BufferedReader reader = new BufferedReader(socket_reader);
+        BufferedReader reader = new BufferedReader(socketReader);
 
         while (true) {
             String receivedMsg = reader.readLine();
@@ -113,6 +114,7 @@ public class ChatClient {
             Thread.sleep(73);
         } catch (InterruptedException ex) {
             System.err.println("Couldn't sleep! (" + ex.getMessage() + ")");
+            Thread.currentThread().interrupt();
         }
 
         connectionOver = true;

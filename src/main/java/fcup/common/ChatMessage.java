@@ -5,16 +5,16 @@ public class ChatMessage {
     private String messageFirstPart;
     private String messageSecondPart;
 
-    public ChatMessage(MessageType _messageType, String _messageFirstPart, String _messageSecondPart) {
-        this.messageType = _messageType;
-        this.messageFirstPart = _messageFirstPart;
-        this.messageSecondPart = _messageSecondPart;
+    public ChatMessage(MessageType messageType, String messageFirstPart, String messageSecondPart) {
+        this.messageType = messageType;
+        this.messageFirstPart = messageFirstPart;
+        this.messageSecondPart = messageSecondPart;
     }
 
     public String toString(Boolean prettify) {
         String finalMsg;
 
-        if (prettify) {
+        if (Boolean.TRUE.equals(prettify)) {
             switch (this.messageType) {
                 case OK:
                     finalMsg = "Comando aceite!";
@@ -100,12 +100,11 @@ public class ChatMessage {
                 messageType = MessageType.ERROR;
                 messageFirstPart = unparsedMessage.substring(6);
                 break;
-            case "MESSAGE": {
+            case "MESSAGE":
                 messageType = MessageType.MESSAGE;
                 messageFirstPart = msgParts[1];
                 messageSecondPart = createSecondPart(msgParts);
                 break;
-            }
             case "NEWNICK":
                 messageType = MessageType.NEWNICK;
                 messageFirstPart = msgParts[1];
@@ -127,12 +126,11 @@ public class ChatMessage {
                 messageFirstPart = msgParts[1];
                 messageSecondPart = msgParts[2];
                 break;
-            case "PRIVATE": {
+            case "PRIVATE":
                 messageType = MessageType.PRIVATE;
                 messageFirstPart = msgParts[1];
                 messageSecondPart = createSecondPart(msgParts);
                 break;
-            }
             default:
                 throw new IllegalStateException("Unexpected value: " + msgParts[0]);
         }

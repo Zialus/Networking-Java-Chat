@@ -16,6 +16,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class ChatServer {
     static private final ByteBuffer inBuffer = ByteBuffer.allocate(16384);
 
     // Decoder/Encoder for text transmission
-    static private final Charset charset = Charset.forName("UTF8");
+    static private final Charset charset = StandardCharsets.UTF_8;
     static private final CharsetEncoder encoder = charset.newEncoder();
     static private final CharsetDecoder decoder = charset.newDecoder();
 
@@ -74,9 +75,8 @@ public class ChatServer {
 
         int port = Integer.parseInt(portStr);
 
-        try {
+        try(ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
             // Setup server
-            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
             ServerSocket serverSocket = serverSocketChannel.socket();
             InetSocketAddress isa = new InetSocketAddress(port);
