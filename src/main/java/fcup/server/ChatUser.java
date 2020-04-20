@@ -1,6 +1,7 @@
 package fcup.server;
 
 import java.nio.channels.SocketChannel;
+import java.util.Objects;
 
 class ChatUser implements Comparable<ChatUser> {
     private String nick;
@@ -18,6 +19,19 @@ class ChatUser implements Comparable<ChatUser> {
     @Override
     public int compareTo(ChatUser a) {
         return this.nick.compareTo(a.nick);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final ChatUser chatUser = (ChatUser) o;
+        return Objects.equals(nick, chatUser.nick);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nick);
     }
 
     public UserState getState() {

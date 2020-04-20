@@ -27,7 +27,7 @@ public class ChatClient {
     private Boolean connectionOver = false;
 
     // Decoder/Encoder for text transmission
-    private final Charset charset = StandardCharsets.UTF_8;
+    private static final Charset charset = StandardCharsets.UTF_8;
     private final CharsetEncoder encoder = charset.newEncoder();
     private final CharsetDecoder decoder = charset.newDecoder();
 
@@ -46,7 +46,7 @@ public class ChatClient {
 
         // Setup GUI
         JFrame frame = new JFrame("Chat Client");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());

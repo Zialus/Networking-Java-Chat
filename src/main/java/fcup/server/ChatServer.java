@@ -25,20 +25,20 @@ import java.util.Set;
 public class ChatServer {
 
     // Buffer for the received data
-    static private final ByteBuffer inBuffer = ByteBuffer.allocate(16384);
+    private static final ByteBuffer inBuffer = ByteBuffer.allocate(16384);
 
     // Decoder/Encoder for text transmission
-    static private final Charset charset = StandardCharsets.UTF_8;
-    static private final CharsetEncoder encoder = charset.newEncoder();
-    static private final CharsetDecoder decoder = charset.newDecoder();
+    private static final Charset charset = StandardCharsets.UTF_8;
+    private static final CharsetEncoder encoder = charset.newEncoder();
+    private static final CharsetDecoder decoder = charset.newDecoder();
 
     // Users + Rooms vars
-    static private Map<SocketChannel, ChatUser> users = new HashMap<>();
-    static private Map<String, ChatUser> nicks = new HashMap<>();
-    static private Map<String, ChatRoom> rooms = new HashMap<>();
+    private static Map<SocketChannel, ChatUser> users = new HashMap<>();
+    private static Map<String, ChatUser> nicks = new HashMap<>();
+    private static Map<String, ChatRoom> rooms = new HashMap<>();
 
-    static private String incompleteMessage = "";
-    static private boolean incomplete = false;
+    private static String incompleteMessage = "";
+    private static boolean incomplete = false;
 
     private static void closeClient(SocketChannel socketChannel) throws IOException {
 
