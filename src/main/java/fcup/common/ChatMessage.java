@@ -1,6 +1,6 @@
 package fcup.common;
 
-public class ChatMessage {
+public final class ChatMessage {
     private final MessageType messageType;
     private final String messageFirstPart;
     private final String messageSecondPart;
@@ -86,67 +86,51 @@ public class ChatMessage {
     }
 
     public static ChatMessage parseString(final String unparsedMessage) {
-        final MessageType messageType;
+        final String[] msgParts = unparsedMessage.split(" ");
+
+        final String action = msgParts[0];
+
+        final MessageType messageType = MessageType.valueOf(action);
         String messageFirstPart = "";
         String messageSecondPart = "";
 
-        final String[] msgParts = unparsedMessage.split(" ");
-
-        switch (msgParts[0]) {
-            case "OK":
-                messageType = MessageType.OK;
+        switch (messageType) {
+            case OK:
+            case BYE:
                 break;
-            case "ERROR":
-                messageType = MessageType.ERROR;
+            case ERROR:
                 messageFirstPart = unparsedMessage.substring(6);
                 break;
-            case "MESSAGE":
-                messageType = MessageType.MESSAGE;
+            case MESSAGE:
+            case PRIVATE:
                 messageFirstPart = msgParts[1];
                 messageSecondPart = createSecondPart(msgParts);
                 break;
-            case "NEWNICK":
-                messageType = MessageType.NEWNICK;
+            case NEWNICK:
+            case SALA:
                 messageFirstPart = msgParts[1];
                 messageSecondPart = msgParts[2];
                 break;
-            case "JOINED":
-                messageType = MessageType.JOINED;
+            case JOINED:
+            case LEFT:
                 messageFirstPart = msgParts[1];
                 break;
-            case "LEFT":
-                messageType = MessageType.LEFT;
-                messageFirstPart = msgParts[1];
-                break;
-            case "BYE":
-                messageType = MessageType.BYE;
-                break;
-            case "SALA":
-                messageType = MessageType.SALA;
-                messageFirstPart = msgParts[1];
-                messageSecondPart = msgParts[2];
-                break;
-            case "PRIVATE":
-                messageType = MessageType.PRIVATE;
-                messageFirstPart = msgParts[1];
-                messageSecondPart = createSecondPart(msgParts);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + msgParts[0]);
         }
 
         return (new ChatMessage(messageType, messageFirstPart, messageSecondPart));
     }
 
     private static String createSecondPart(final String[] msgParts) {
-        final String messageSecondPart;
         final StringBuilder finalMessage = new StringBuilder();
+
         for (int i = 2; i < msgParts.length; i++) {
-            if (i > 2) { finalMessage.append(" "); }
+            if (i > 2) {
+                finalMessage.append(" ");
+            }
             finalMessage.append(msgParts[i]);
         }
-        messageSecondPart = finalMessage.toString();
-        return messageSecondPart;
+
+        return finalMessage.toString();
     }
 
 }
