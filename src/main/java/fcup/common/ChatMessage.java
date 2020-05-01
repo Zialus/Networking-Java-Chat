@@ -1,17 +1,17 @@
 package fcup.common;
 
 public class ChatMessage {
-    private MessageType messageType;
-    private String messageFirstPart;
-    private String messageSecondPart;
+    private final MessageType messageType;
+    private final String messageFirstPart;
+    private final String messageSecondPart;
 
-    public ChatMessage(MessageType messageType, String messageFirstPart, String messageSecondPart) {
+    public ChatMessage(final MessageType messageType, final String messageFirstPart, final String messageSecondPart) {
         this.messageType = messageType;
         this.messageFirstPart = messageFirstPart;
         this.messageSecondPart = messageSecondPart;
     }
 
-    public String toString(Boolean prettify) {
+    public String toString(final Boolean prettify) {
         String finalMsg;
 
         if (Boolean.TRUE.equals(prettify)) {
@@ -85,12 +85,12 @@ public class ChatMessage {
         return finalMsg;
     }
 
-    public static ChatMessage parseString(String unparsedMessage) {
-        MessageType messageType;
+    public static ChatMessage parseString(final String unparsedMessage) {
+        final MessageType messageType;
         String messageFirstPart = "";
         String messageSecondPart = "";
 
-        String[] msgParts = unparsedMessage.split(" ");
+        final String[] msgParts = unparsedMessage.split(" ");
 
         switch (msgParts[0]) {
             case "OK":
@@ -138,9 +138,9 @@ public class ChatMessage {
         return (new ChatMessage(messageType, messageFirstPart, messageSecondPart));
     }
 
-    private static String createSecondPart(String[] msgParts) {
-        String messageSecondPart;
-        StringBuilder finalMessage = new StringBuilder();
+    private static String createSecondPart(final String[] msgParts) {
+        final String messageSecondPart;
+        final StringBuilder finalMessage = new StringBuilder();
         for (int i = 2; i < msgParts.length; i++) {
             if (i > 2) { finalMessage.append(" "); }
             finalMessage.append(msgParts[i]);

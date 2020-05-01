@@ -8,15 +8,15 @@ public class ChatRoomTest {
 
     @Test
     public void getUsers() {
-        ChatRoom room = new ChatRoom("OLA");
+        final ChatRoom room = new ChatRoom("OLA");
 
-        ChatUser user1 = new ChatUser(null);
+        final ChatUser user1 = new ChatUser(null);
         user1.setNick("user1");
-        ChatUser user2 = new ChatUser(null);
+        final ChatUser user2 = new ChatUser(null);
         user2.setNick("user2");
-        ChatUser user3 = new ChatUser(null);
+        final ChatUser user3 = new ChatUser(null);
         user3.setNick("user3");
-        ChatUser user4 = new ChatUser(null);
+        final ChatUser user4 = new ChatUser(null);
         user4.setNick("user4");
 
         room.userJoin(user1);

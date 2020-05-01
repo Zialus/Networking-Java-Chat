@@ -6,10 +6,10 @@ import java.util.Objects;
 class ChatUser implements Comparable<ChatUser> {
     private String nick;
     private UserState userState;
-    private SocketChannel socketChannel;
+    private final SocketChannel socketChannel;
     private ChatRoom room;
 
-    public ChatUser(SocketChannel socketChannel) {
+    public ChatUser(final SocketChannel socketChannel) {
         this.userState = UserState.INIT;
         this.socketChannel = socketChannel;
         this.nick = "";
@@ -17,7 +17,7 @@ class ChatUser implements Comparable<ChatUser> {
     }
 
     @Override
-    public int compareTo(ChatUser a) {
+    public int compareTo(final ChatUser a) {
         return this.nick.compareTo(a.nick);
     }
 
@@ -38,7 +38,7 @@ class ChatUser implements Comparable<ChatUser> {
         return this.userState;
     }
 
-    public void setState(UserState newState) {
+    public void setState(final UserState newState) {
         this.userState = newState;
     }
 
@@ -46,7 +46,7 @@ class ChatUser implements Comparable<ChatUser> {
         return this.nick;
     }
 
-    public void setNick(String newNick) {
+    public void setNick(final String newNick) {
         this.nick = newNick;
     }
 
@@ -58,7 +58,7 @@ class ChatUser implements Comparable<ChatUser> {
         this.room = null;
     }
 
-    public void joinRoom(ChatRoom newRoom) {
+    public void joinRoom(final ChatRoom newRoom) {
         this.room = newRoom;
     }
 

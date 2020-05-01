@@ -4,10 +4,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 class ChatRoom {
-    private String name;
-    private Set<ChatUser> users;
+    private final String name;
+    private final Set<ChatUser> users;
 
-    public ChatRoom(String name) {
+    public ChatRoom(final String name) {
         this.name = name;
         this.users = new TreeSet<>();
     }
@@ -20,11 +20,11 @@ class ChatRoom {
         return this.name;
     }
 
-    public void userJoin(ChatUser user) {
+    public void userJoin(final ChatUser user) {
         this.users.add(user);
     }
 
-    public void userLeft(ChatUser user) {
+    public void userLeft(final ChatUser user) {
         this.users.remove(user);
     }
 

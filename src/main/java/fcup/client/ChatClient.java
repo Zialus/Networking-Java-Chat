@@ -19,8 +19,8 @@ import java.nio.charset.StandardCharsets;
 public class ChatClient {
 
     // GUI vars
-    private JTextField chatBox = new JTextField();
-    private JTextArea chatArea = new JTextArea();
+    private final JTextField chatBox = new JTextField();
+    private final JTextArea chatArea = new JTextArea();
 
     // Socket vars
     private SocketChannel socketChannel;
@@ -42,13 +42,13 @@ public class ChatClient {
     }
 
     // Initializer: GUI and Server Connection
-    private ChatClient(String server, int port) {
+    private ChatClient(final String server, final int port) {
 
         // Setup GUI
-        JFrame frame = new JFrame("Chat Client");
+        final JFrame frame = new JFrame("Chat Client");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel();
+        final JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(chatBox);
 
@@ -73,17 +73,17 @@ public class ChatClient {
             socketChannel = SocketChannel.open();
             socketChannel.configureBlocking(true);
             socketChannel.connect(new InetSocketAddress(server, port));
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             System.err.println("There was an error setting up the connection with the server! (" + ex.getMessage() + ")");
         }
 
     }
 
     // Message sender - send the message to the server
-    private void newMessage(String message) {
+    private void newMessage(final String message) {
         try {
             socketChannel.write(encoder.encode(CharBuffer.wrap(message + "\n")));
-        } catch (IOException e) {
+        } catch (final IOException e) {
             System.err.println("There was an error writing the message to the socket! (" + e.getMessage() + ")");
         }
     }
@@ -93,9 +93,9 @@ public class ChatClient {
 
         socketChannel.finishConnect();
 
-        InputStreamReader socketReader = new InputStreamReader(socketChannel.socket().getInputStream(), decoder);
+        final InputStreamReader socketReader = new InputStreamReader(socketChannel.socket().getInputStream(), decoder);
 
-        BufferedReader reader = new BufferedReader(socketReader);
+        final BufferedReader reader = new BufferedReader(socketReader);
 
         while (true) {
             String receivedMsg = reader.readLine();
@@ -112,7 +112,7 @@ public class ChatClient {
 
         try {
             Thread.sleep(73);
-        } catch (InterruptedException ex) {
+        } catch (final InterruptedException ex) {
             System.err.println("Couldn't sleep! (" + ex.getMessage() + ")");
             Thread.currentThread().interrupt();
         }
@@ -121,17 +121,17 @@ public class ChatClient {
     }
 
     // Client Main
-    public static void main(String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
 
         if (args.length != 2) {
             System.err.println("Usage: chatClient <server ip> <server port>");
             return;
         }
 
-        String ip = args[0];
-        String port = args[1];
+        final String ip = args[0];
+        final String port = args[1];
 
-        ChatClient client = new ChatClient(ip, Integer.parseInt(port));
+        final ChatClient client = new ChatClient(ip, Integer.parseInt(port));
         client.run();
     }
 
