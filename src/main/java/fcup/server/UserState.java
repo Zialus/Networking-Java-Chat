@@ -1,3 +1,7 @@
 package fcup.server;
 
-enum UserState {INIT, OUTSIDE, INSIDE}
+enum UserState {
+    INIT,
+    OUTSIDE,
+    INSIDE
+}
