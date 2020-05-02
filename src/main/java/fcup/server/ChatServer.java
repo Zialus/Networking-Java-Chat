@@ -2,6 +2,7 @@ package fcup.server;
 
 import fcup.common.ChatMessage;
 import fcup.common.MessageType;
+import lombok.extern.java.Log;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
+@Log
 public class ChatServer {
 
     // Buffer for the received data
@@ -45,10 +46,10 @@ public class ChatServer {
         final Socket socket = socketChannel.socket();
 
         try {
-            System.out.println("Closing connection to " + socket);
+            log.info("Closing connection to " + socket);
             socketChannel.close();
         } catch (final IOException ex) {
-            System.err.println("Error closing socket " + socket + "! (" + ex + ")");
+            log.severe("Error closing socket " + socket + "! (" + ex + ")");
         }
 
         if (!users.containsKey(socketChannel))
@@ -67,7 +68,7 @@ public class ChatServer {
     public static void main(final String[] args) {
 
         if (args.length != 1) {
-            System.err.println("Usage: chatServer <server port>");
+            log.severe("Usage: chatServer <server port>");
             return;
         }
 
@@ -75,7 +76,7 @@ public class ChatServer {
 
         final int port = Integer.parseInt(portStr);
 
-        try(final ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
+        try (final ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
             // Setup server
             serverSocketChannel.configureBlocking(false);
             final ServerSocket serverSocket = serverSocketChannel.socket();
@@ -84,7 +85,7 @@ public class ChatServer {
 
             final Selector selector = Selector.open();
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            System.out.println("Server listening on port " + port);
+            log.info("Server listening on port " + port);
 
             while (true) {
                 final int num = selector.select();
@@ -99,7 +100,7 @@ public class ChatServer {
 
                         // Received a new incoming connection
                         final Socket socket = serverSocket.accept();
-                        System.out.println("Got connection from " + socket);
+                        log.info("Got connection from " + socket);
 
                         final SocketChannel socketChannel = socket.getChannel();
                         socketChannel.configureBlocking(false);
@@ -135,7 +136,7 @@ public class ChatServer {
                 keys.clear();
             }
         } catch (final IOException ex) {
-            ex.printStackTrace();
+            log.severe(ex.getMessage());
         }
     }
 

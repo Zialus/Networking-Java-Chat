@@ -1,6 +1,7 @@
 package fcup.client;
 
 import fcup.common.ChatMessage;
+import lombok.extern.java.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 
-
+@Log
 public class ChatClient {
 
     // GUI vars
@@ -74,7 +75,7 @@ public class ChatClient {
             socketChannel.configureBlocking(true);
             socketChannel.connect(new InetSocketAddress(server, port));
         } catch (final IOException ex) {
-            System.err.println("There was an error setting up the connection with the server! (" + ex.getMessage() + ")");
+            log.severe("There was an error setting up the connection with the server! (" + ex.getMessage() + ")");
         }
 
     }
@@ -84,7 +85,7 @@ public class ChatClient {
         try {
             socketChannel.write(encoder.encode(CharBuffer.wrap(message + "\n")));
         } catch (final IOException e) {
-            System.err.println("There was an error writing the message to the socket! (" + e.getMessage() + ")");
+            log.severe("There was an error writing the message to the socket! (" + e.getMessage() + ")");
         }
     }
 
@@ -108,12 +109,12 @@ public class ChatClient {
 
         socketChannel.close();
 
-        System.out.println("Closing connection to the server...");
+        log.info("Closing connection to the server...");
 
         try {
             Thread.sleep(73);
         } catch (final InterruptedException ex) {
-            System.err.println("Couldn't sleep! (" + ex.getMessage() + ")");
+            log.severe("Couldn't sleep! (" + ex.getMessage() + ")");
             Thread.currentThread().interrupt();
         }
 
@@ -124,7 +125,7 @@ public class ChatClient {
     public static void main(final String[] args) throws IOException {
 
         if (args.length != 2) {
-            System.err.println("Usage: chatClient <server ip> <server port>");
+            log.severe("Usage: chatClient <server ip> <server port>");
             return;
         }
 
