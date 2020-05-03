@@ -1,9 +1,9 @@
 plugins {
-    id 'info.solidsoft.pitest' version '1.4.8'
+    id 'info.solidsoft.pitest' version '1.5.0'
     id "se.patrikerdes.use-latest-versions" version "0.2.13"
     id "com.github.ben-manes.versions" version "0.28.0"
 //    id "net.ltgt.errorprone" version "1.1.1"
-//    id "com.github.spotbugs" version "4.0.5"
+//    id "com.github.spotbugs" version "4.0.8"
 //    id "pmd"
 //    id 'checkstyle'
     id "java"
@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0-M1'
 
 //    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1'
 //    spotbugsPlugins 'com.mebigfatguy.sb-contrib:sb-contrib:7.4.7'
