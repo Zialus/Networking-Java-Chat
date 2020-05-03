@@ -65,6 +65,10 @@ public class ChatServer {
         users.remove(socketChannel);
     }
 
+    private static int getPort(final String arg) {
+        return Integer.parseInt(arg);
+    }
+
     public static void main(final String[] args) {
 
         if (args.length != 1) {
@@ -72,72 +76,81 @@ public class ChatServer {
             return;
         }
 
-        final String portStr = args[0];
-
-        final int port = Integer.parseInt(portStr);
+        final int port = getPort(args[0]);
 
         try (final ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
-            // Setup server
-            serverSocketChannel.configureBlocking(false);
-            final ServerSocket serverSocket = serverSocketChannel.socket();
-            final InetSocketAddress isa = new InetSocketAddress(port);
-            serverSocket.bind(isa);
-
-            final Selector selector = Selector.open();
-            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            log.info("Server listening on port " + port);
-
-            while (true) {
-                final int num = selector.select();
-
-                if (num == 0)
-                    continue;
-
-                final Set<SelectionKey> keys = selector.selectedKeys();
-                for (final SelectionKey key : keys) {
-
-                    if ((key.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) {
-
-                        // Received a new incoming connection
-                        final Socket socket = serverSocket.accept();
-                        log.info("Got connection from " + socket);
-
-                        final SocketChannel socketChannel = socket.getChannel();
-                        socketChannel.configureBlocking(false);
-
-                        socketChannel.register(selector, SelectionKey.OP_READ);
-                        users.put(socketChannel, new ChatUser(socketChannel));
-
-                    } else if ((key.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ) {
-
-                        SocketChannel socketChannel = null;
-
-                        try {
-
-                            // Reveived data on a connection
-                            socketChannel = (SocketChannel) key.channel();
-                            final boolean ok = processInput(socketChannel);
-
-                            // If the connection is dead, remove it from the selector and close it, and remove user also
-                            if (!ok) {
-                                key.cancel();
-                                closeClient(socketChannel);
-                            }
-
-                        } catch (final IOException ex) {
-
-                            // On exception, remove this channel from the selector and remove user
-                            key.cancel();
-                            closeClient(socketChannel);
-                        }
-                    }
-                }
-
-                keys.clear();
-            }
+            run(port, serverSocketChannel);
         } catch (final IOException ex) {
             log.severe(ex.getMessage());
         }
+    }
+
+    private static void run(final int port, final ServerSocketChannel serverSocketChannel) throws IOException {
+        // Setup server
+        serverSocketChannel.configureBlocking(false);
+        final ServerSocket serverSocket = serverSocketChannel.socket();
+        final InetSocketAddress isa = new InetSocketAddress(port);
+        serverSocket.bind(isa);
+
+        final Selector selector = Selector.open();
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+        log.info("Server listening on port " + port);
+
+        serverLoop(serverSocket, selector);
+    }
+
+    private static void serverLoop(final ServerSocket serverSocket, final Selector selector) throws IOException {
+        while (true) {
+            final int num = selector.select();
+
+            if (num == 0)
+                continue;
+
+            final Set<SelectionKey> keys = selector.selectedKeys();
+
+            for (final SelectionKey key : keys) {
+                if ((key.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) {
+                    processNewConnection(serverSocket, selector);
+                } else if ((key.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ) {
+                    processExistingConnection(key);
+                }
+            }
+
+            keys.clear();
+        }
+    }
+
+    private static void processExistingConnection(final SelectionKey key) throws IOException {
+        SocketChannel socketChannel = null;
+
+        try {
+            // Reveived data on a connection
+            socketChannel = (SocketChannel) key.channel();
+            final boolean ok = processInput(socketChannel);
+
+            // If the connection is dead, remove it from the selector and close it, and remove user also
+            if (!ok) {
+                key.cancel();
+                closeClient(socketChannel);
+            }
+
+        } catch (final IOException ex) {
+            // On exception, remove this channel from the selector and remove user
+            key.cancel();
+            closeClient(socketChannel);
+        }
+    }
+
+    private static void processNewConnection(final ServerSocket serverSocket, final Selector selector) throws IOException {
+        // Received a new incoming connection
+        final Socket socket = serverSocket.accept();
+        log.info("Got connection from " + socket);
+
+        final SocketChannel socketChannel = socket.getChannel();
+        socketChannel.configureBlocking(false);
+
+        socketChannel.register(selector, SelectionKey.OP_READ);
+        users.put(socketChannel, new ChatUser(socketChannel));
     }
 
     private static void sendMessage(final SocketChannel socketChannel, final ChatMessage message) throws IOException {
@@ -346,15 +359,7 @@ public class ChatServer {
         String message = decoder.decode(inBuffer).toString();
         final ChatUser sender = users.get(socketChannel);
 
-        if (!message.contains("\n")) {
-            incompleteMessage += message;
-            incomplete = true;
-        } else if (incomplete) {
-            incompleteMessage += message;
-            message = incompleteMessage;
-            incomplete = false;
-            incompleteMessage = "";
-        }
+        message = processMessageCompleteness(message);
 
         if (!incomplete) {
             final String[] split = message.split("\n+");
@@ -370,5 +375,18 @@ public class ChatServer {
             }
         }
         return true;
+    }
+
+    private static String processMessageCompleteness(String message) {
+        if (!message.contains("\n")) {
+            incompleteMessage += message;
+            incomplete = true;
+        } else if (incomplete) {
+            incompleteMessage += message;
+            message = incompleteMessage;
+            incomplete = false;
+            incompleteMessage = "";
+        }
+        return message;
     }
 }

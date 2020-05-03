@@ -122,7 +122,7 @@ public class ChatClient {
     }
 
     // Client Main
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) {
 
         if (args.length != 2) {
             log.severe("Usage: chatClient <server ip> <server port>");
@@ -133,7 +133,12 @@ public class ChatClient {
         final String port = args[1];
 
         final ChatClient client = new ChatClient(ip, Integer.parseInt(port));
-        client.run();
+
+        try {
+            client.run();
+        } catch (final IOException e) {
+            log.severe(e.getMessage());
+        }
     }
 
 }
