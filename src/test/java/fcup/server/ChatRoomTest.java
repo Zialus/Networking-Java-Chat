@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ChatRoomTest {
+class ChatRoomTest {
 
     private final String chatRoomName = "OLA";
 
@@ -21,7 +21,7 @@ public class ChatRoomTest {
     }
 
     @Test
-    public void testGetUsers() {
+    void testGetUsers() {
         final ChatUser user1 = new ChatUser(null);
         user1.setNick("user1");
         final ChatUser user2 = new ChatUser(null);

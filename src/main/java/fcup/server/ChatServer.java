@@ -268,8 +268,7 @@ public class ChatServer {
 
         final String roomName = msgParts[1];
 
-        if (!rooms.containsKey(roomName))
-            rooms.put(roomName, new ChatRoom(roomName));
+        rooms.putIfAbsent(roomName, new ChatRoom(roomName));
 
         final ChatRoom senderRoom = rooms.get(roomName);
 
