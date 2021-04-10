@@ -63,12 +63,12 @@ test {
 // Don't produce default Jar
 jar.enabled = false
 
-Task jarPackage(String groupName, String artifactName, String artifactVersion) {
+def jarPackage(String groupName, String artifactName, String artifactVersion) {
     return tasks.create("jar_${artifactName}", Jar) {
         getArchiveBaseName().set(artifactName)
         getArchiveVersion().set(artifactVersion)
 
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+        from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 
         from(sourceSets.main.output) {
             include "$groupName/**"
