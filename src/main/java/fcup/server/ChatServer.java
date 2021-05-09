@@ -121,11 +121,10 @@ public class ChatServer {
     }
 
     private static void processExistingConnection(final SelectionKey key) throws IOException {
-        SocketChannel socketChannel = null;
+        SocketChannel socketChannel = (SocketChannel) key.channel();
 
         try {
             // Reveived data on a connection
-            socketChannel = (SocketChannel) key.channel();
             final boolean ok = processInput(socketChannel);
 
             // If the connection is dead, remove it from the selector and close it, and remove user also
