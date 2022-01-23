@@ -11,10 +11,10 @@ public final class ChatMessage {
         this.messageSecondPart = messageSecondPart;
     }
 
-    public String toString(final Boolean prettify) {
+    public String toString(final boolean prettify) {
         String finalMsg;
 
-        if (Boolean.TRUE.equals(prettify)) {
+        if (prettify) {
             switch (this.messageType) {
                 case OK:
                     finalMsg = "Comando aceite!";

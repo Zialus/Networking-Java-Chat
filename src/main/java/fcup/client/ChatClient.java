@@ -25,7 +25,7 @@ public class ChatClient {
 
     // Socket vars
     private SocketChannel socketChannel;
-    private Boolean connectionOver = false;
+    private boolean connectionOver = false;
 
     // Decoder/Encoder for text transmission
     private static final Charset charset = StandardCharsets.UTF_8;
@@ -61,7 +61,7 @@ public class ChatClient {
         chatArea.setEditable(false);
         chatBox.setEditable(true);
         chatBox.addActionListener(e -> {
-            if (Boolean.TRUE.equals(connectionOver)) {
+            if (connectionOver) {
                 Runtime.getRuntime().exit(0);
             }
 
