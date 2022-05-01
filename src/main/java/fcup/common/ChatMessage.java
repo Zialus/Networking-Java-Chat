@@ -117,7 +117,7 @@ public final class ChatMessage {
                 break;
         }
 
-        return (new ChatMessage(messageType, messageFirstPart, messageSecondPart));
+        return new ChatMessage(messageType, messageFirstPart, messageSecondPart);
     }
 
     private static String createSecondPart(final String[] msgParts) {
