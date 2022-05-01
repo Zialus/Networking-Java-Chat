@@ -1,9 +1,12 @@
 package fcup.server;
 
-import java.nio.channels.SocketChannel;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
 
+import java.nio.channels.SocketChannel;
+
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 class ChatUser implements Comparable<ChatUser> {
+    @EqualsAndHashCode.Include
     private String nick;
     private UserState userState;
     private final SocketChannel socketChannel;
@@ -19,19 +22,6 @@ class ChatUser implements Comparable<ChatUser> {
     @Override
     public int compareTo(final ChatUser a) {
         return this.nick.compareTo(a.nick);
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final ChatUser chatUser = (ChatUser) o;
-        return Objects.equals(nick, chatUser.nick);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nick);
     }
 
     public UserState getState() {
