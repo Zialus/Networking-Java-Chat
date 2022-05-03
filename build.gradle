@@ -10,7 +10,6 @@ plugins {
     id "idea"
     id 'jacoco'
     id "org.sonarqube" version "3.3"
-    id "com.heroku.sdk.heroku-gradle" version "2.0.0"
     id "io.freefair.lombok" version "6.4.3"
 }
 
