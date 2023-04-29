@@ -1,7 +1,7 @@
 language: java
 
 install:
-  - export VERSION=7.6
+  - export VERSION=8.1.1
   - export GRADLE_DIR=/tmp/gradle
   - wget https://services.gradle.org/distributions/gradle-${VERSION}-bin.zip
   - mkdir ${GRADLE_DIR}
@@ -16,6 +16,7 @@ os:
   - osx
 
 jdk:
+  - openjdk21
   - openjdk20
   - openjdk19
   - openjdk18
@@ -29,4 +30,4 @@ jdk:
 
 jobs:
   allow_failures:
-    - jdk: openjdk20
+    - jdk: openjdk21
