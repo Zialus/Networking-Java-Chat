@@ -1,7 +1,7 @@
 language: java
 
 install:
-  - export VERSION=8.1.1
+  - export VERSION=8.10
   - export GRADLE_DIR=/tmp/gradle
   - wget https://services.gradle.org/distributions/gradle-${VERSION}-bin.zip
   - mkdir ${GRADLE_DIR}
@@ -9,13 +9,15 @@ install:
   - export PATH=${GRADLE_DIR}/gradle-${VERSION}/bin:$PATH
   - gradle -v
 
-dist: xenial
+dist: jammy
 
 os:
   - linux
   - osx
 
 jdk:
+  - openjdk23
+  - openjdk22
   - openjdk21
   - openjdk20
   - openjdk19
@@ -30,4 +32,4 @@ jdk:
 
 jobs:
   allow_failures:
-    - jdk: openjdk21
+    - jdk: openjdk23
