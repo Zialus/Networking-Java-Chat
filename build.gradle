@@ -32,8 +32,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.11.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.11.4'
 
     spotbugsPlugins('com.h3xstream.findsecbugs:findsecbugs-plugin:1.13.0') { transitive = false }
     spotbugsPlugins('com.mebigfatguy.sb-contrib:sb-contrib:7.6.8') { transitive = false }
