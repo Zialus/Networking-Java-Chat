@@ -131,7 +131,7 @@ lombok {
 }
 
 spotbugs {
-    toolVersion = '4.9.0'
+    toolVersion = '4.9.1'
     ignoreFailures = true
     showStackTraces = false
     showProgress = true
