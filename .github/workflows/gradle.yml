@@ -32,7 +32,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-         gradle-version: "release-candidate"
+         gradle-version: "nightly"
 
       - name: Gralde Info
         run: gradle -v
