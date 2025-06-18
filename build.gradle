@@ -36,7 +36,7 @@ dependencies {
     testImplementation('org.junit.platform:junit-platform-launcher:1.13.1')
 
     spotbugsPlugins('com.h3xstream.findsecbugs:findsecbugs-plugin:1.14.0')
-    spotbugsPlugins('com.mebigfatguy.sb-contrib:sb-contrib:7.6.10')
+    spotbugsPlugins('com.mebigfatguy.sb-contrib:sb-contrib:7.6.11')
 
     annotationProcessor('com.uber.nullaway:nullaway:0.12.7')
     errorprone('com.google.errorprone:error_prone_core:2.38.0')
