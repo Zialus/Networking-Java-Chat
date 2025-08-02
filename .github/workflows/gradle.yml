@@ -31,12 +31,21 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.0'
 
       - name: Gralde Info
         run: gradle -v
         
       - name: Gradle Build
-        run: gradle build
+        run: gradle build --scan
+  
+      - name: Upload build reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-reports
+          path: '**/build/reports/'
 
       - name: Gradle Test
         run: gradle pitest
@@ -66,6 +75,8 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.0'
 
       - name: Gralde Info
         run: gradle -v
