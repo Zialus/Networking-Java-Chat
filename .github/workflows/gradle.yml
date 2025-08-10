@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        java: [11, 17, 21, 24]
+        java: [17, 21, 24]
 
     runs-on: ${{ matrix.os }}
 
@@ -31,10 +31,12 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 'current'
 
       - name: Gralde Info
         run: gradle -v
-        
+
       - name: Gradle Build
         run: gradle build
 
@@ -55,8 +57,6 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
-        with:
-          gradle-version: 'release-candidate'
 
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v4
@@ -66,12 +66,21 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 'current'
 
       - name: Gralde Info
         run: gradle -v
-        
+
       - name: Gradle Build
-        run: gradle build -D enableErrorProne=true
+        run: gradle build -D enableErrorProne=true --scan
+
+      - name: Upload gradle build scan reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-reports
+          path: '**/build/reports/'
 
   sonar:
     name: Sonarcloud
