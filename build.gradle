@@ -113,8 +113,8 @@ pmdTest {
 }
 
 pitest {
-    junit5PluginVersion = '1.2.1'
-    pitestVersion = '1.19.1'
+    junit5PluginVersion = '1.2.3'
+    pitestVersion = '1.20.3'
     mutators = ["ALL"]
 }
 
