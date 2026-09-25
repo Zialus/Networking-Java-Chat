@@ -95,7 +95,7 @@ def chatServerJar = jarPackage("$group", "server.ChatServer", "$version")
 assemble.dependsOn chatClientJar, chatServerJar
 
 pmd {
-    toolVersion = '7.27.0'
+    toolVersion = '7.28.0'
     ignoreFailures = true
 }
 
