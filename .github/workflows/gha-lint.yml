@@ -25,7 +25,7 @@ jobs:
           persist-credentials: false
 
       - name: 🔎 Run actionlint
-        uses: reviewdog/action-actionlint@d290e336d5a743810aef4404f757dc862276d2ae  # v1.73.4
+        uses: reviewdog/action-actionlint@b76d06f8570118465db3190c9a08f1b29d341aa1  # v1.80.3
         with:
           reporter: github-pr-review
 
