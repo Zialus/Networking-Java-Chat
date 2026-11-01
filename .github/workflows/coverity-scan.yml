@@ -43,13 +43,14 @@ jobs:
 
       - name: Build with cov-build
         run: |
-          export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
+          PATH="$GITHUB_WORKSPACE/cov-analysis-linux64/bin:$PATH"
+          export PATH
           cov-build --dir cov-int gradle build --no-daemon
       - name: Submit the result to Coverity Scan
         run: |
           tar czvf snake.tgz cov-int
           curl \
-          --form token=$TOKEN \
+          --form "token=$TOKEN" \
           --form email=raulmendesferreira@gmail.com \
           --form file=@snake.tgz \
           --form version="trunk" \
