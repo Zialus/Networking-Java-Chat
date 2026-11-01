@@ -9,15 +9,19 @@ on:
 
 permissions:
   contents: read
-  checks: write
-  pull-requests: write
-  security-events: write
-  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
     name: Validate GitHub Actions and YAML
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # Required by reviewdog to publish PR review comments.
+      security-events: write  # Required by zizmor-action to upload SARIF results.
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7.0.1
