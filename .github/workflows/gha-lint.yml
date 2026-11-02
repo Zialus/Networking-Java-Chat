@@ -21,7 +21,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: write  # Required by reviewdog to publish PR review comments.
-      security-events: write  # Required by zizmor-action to upload SARIF results.
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7.0.1
@@ -47,3 +46,7 @@ jobs:
 
       - name: 🛡️ Run zizmor
         uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b  # v0.8.0
+        with:
+          persona: auditor
+          annotations: true
+          advanced-security: false
