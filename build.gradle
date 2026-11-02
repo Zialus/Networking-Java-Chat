@@ -12,6 +12,7 @@ plugins {
     id "org.sonarqube" version "7.5.0.8588"
     id "io.freefair.lombok" version "9.8.3"
     id "nebula.lint" version "21.3.0"
+    id "me.champeau.jmh" version "0.7.3"
 }
 
 sonarqube {
@@ -64,6 +65,17 @@ test {
     reports {
         html.required = true
     }
+}
+
+// JMH benchmarks live in src/jmh/java. When the codspeed-jvm submodule is checked out,
+// JMH is substituted with the CodSpeed JMH fork (see settings.gradle).
+jmh {
+    warmupIterations = 2
+    warmup = '1s'
+    iterations = 3
+    timeOnIteration = '1s'
+    fork = 1
+    forceGC = true
 }
 
 // Don't produce default Jar
