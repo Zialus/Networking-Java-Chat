@@ -9,15 +9,18 @@ on:
 
 permissions:
   contents: read
-  checks: write
-  pull-requests: write
-  security-events: write
-  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 
 jobs:
   lint:
     name: Validate GitHub Actions and YAML
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # Required by reviewdog to publish PR review comments.
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7.0.1
@@ -43,3 +46,8 @@ jobs:
 
       - name: 🛡️ Run zizmor
         uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b  # v0.8.0
+        with:
+          inputs: .github
+          persona: pedantic
+          annotations: true
+          advanced-security: false

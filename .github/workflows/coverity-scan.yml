@@ -5,6 +5,13 @@ on:
 
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
+permissions:
+  contents: read
+
 jobs:
   daily_scan:
     name: Daily Scan
@@ -12,6 +19,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up JDK 21
         uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
@@ -34,13 +43,14 @@ jobs:
 
       - name: Build with cov-build
         run: |
-          export PATH=`pwd`/cov-analysis-linux64/bin:$PATH
+          PATH="$GITHUB_WORKSPACE/cov-analysis-linux64/bin:$PATH"
+          export PATH
           cov-build --dir cov-int gradle build --no-daemon
       - name: Submit the result to Coverity Scan
         run: |
           tar czvf snake.tgz cov-int
           curl \
-          --form token=$TOKEN \
+          --form "token=$TOKEN" \
           --form email=raulmendesferreira@gmail.com \
           --form file=@snake.tgz \
           --form version="trunk" \
